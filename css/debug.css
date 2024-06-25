@@ -1,0 +1,80 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white; /* Light gray background similar to main page */
+}
+
+#main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    /* height: auto; */
+    /* width: 100%; */
+    width: auto;
+    
+}
+
+
+#container {
+    border: 2px solid #757474; /* Dark gray border */
+    border-radius: 6px;
+    padding: 60px;
+    background-color: #fff; /* White background for container */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    /* margin-top: 150px; */
+    /* padding-top: 100px; */
+}
+
+input {
+    padding: 10px;
+    margin: 6px;
+    border-radius: 6px;
+    width: 100%;
+    border: 1px solid #ccc; /* Light gray border */
+}
+
+label {
+    margin-bottom: 5px;
+    color: #555;
+    display: inline; /* Ensures label is displayed inline with checkbox */
+}
+
+input:focus {
+    outline: none;
+    border-color: #6bb3c6; /* Light blue border on focus */
+}
+h1{
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #f44336; /* Red button background */
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px; /* Space between input and button */
+    border: 1px solid #f44336; /* Red border on hover */
+
+}
+
+#checkbox-container, #radio-container{
+    display: flex;
+    gap: 3px;
+}
+
+
+input[type="submit"]:hover {
+    background-color: #fff;
+    color: #f44336; /* Red text on hover */
+    border: 1px solid #f44336; /* Red border on hover */
+}
+
