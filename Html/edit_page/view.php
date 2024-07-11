@@ -1,33 +1,9 @@
 <?php
-include 'db.php'; // Ensure db.php includes database connection
+include 'db.php'; // Ensure db.php includes the database connection
 
-// Function to fetch all products from database
-function getProducts() {
-    global $conn;
-    $sql = "SELECT id, name, price, description, image FROM products";
-    $result = $conn->query($sql);
-    $products = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-    }
-    return $products;
-}
-
-// Delete product if delete request is made
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
-    $productId = $_POST['delete'];
-    $sql = "DELETE FROM products WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $productId);
-    if ($stmt->execute()) {
-        header("Location: view_products.php");
-        exit();
-    } else {
-        echo "Error deleting product: " . htmlspecialchars($stmt->error);
-    }
-}
+// Fetch all products from the database
+$sql = "SELECT * FROM products";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -36,45 +12,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Products</title>
-    <link rel="stylesheet" href="../../css/view_products_style.css">
+    <link rel="stylesheet" href="../../css/view_product.css">
+    <?php include '../split/font_awesome.php'; ?>
+
+     
+    
+
 </head>
 <body>
-    <div id="main">
-        <h2>Product List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-               <?php
-$products = getProducts();
-foreach ($products as $product) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($product['name']) . "</td>";
-    echo "<td>" . htmlspecialchars($product['price']) . "</td>";
-    echo "<td>" . htmlspecialchars($product['description']) . "</td>";
-    echo "<td><img src='../../Image/" . htmlspecialchars($product['image']) . "' alt='Product Image' style='max-width: 100px;'></td>";
-    echo "<td>
-            <a href='edit_product.php?id=" . htmlspecialchars($product['id']) . "'>Edit</a> |
-            <form method='post' style='display:inline-block;'>
-                <input type='hidden' name='delete' value='" . htmlspecialchars($product['id']) . "'>
-                <button type='submit' onclick='return confirm(\"Are you sure you want to delete this product?\")'>Delete</button>
-            </form>
-          </td>";
-          
-    echo "</tr>";
-}
-?>
 
-            </tbody>
-        </table>
-        <a href="add_product.php">Add New Product</a>
+
+    <div class="split">
+        <div id="main">
+            <div id="sub_main">
+                <div class="container">
+                    <h2>View Products</h2>
+
+                    <!-- Display products in four columns -->
+                    <div class="product-list">
+                        <?php
+                        if ($result->num_rows > 0) {
+                            $count = 0;
+                            while ($row = $result->fetch_assoc()) {
+                                ?>
+                                <div class="product-item">
+                                    <div>
+                                        <a href="../edit_page/product.php?id=<?php echo $row['id']; ?>">
+                                            <img src="../../Image/<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>">
+                                            <h3><?php echo $row['name']; ?></h3>
+                                        </a>
+                                        <p>Price: $<?php echo $row['price']; ?></p>
+                                    </div>
+                                   
+                                    <a href="javascript:void(0);" onclick="addToCart(<?php echo $row['id']; ?>)" class="cart_button">
+                                    <span class="material-symbols-outlined">shopping_cart</span>
+                                        <p>ADD TO BAG</p>
+                                        </a>
+                                </div>
+
+
+                                <?php
+                                // Check if four items have been displayed
+                                $count++;
+                                if ($count % 4 == 0) {
+                                                                    }
+                            }
+                        } else {
+                            echo "No products found.";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+ <?php include 'popup_to_add_cart.php'; ?>
 </body>
 </html>
+
+<?php
+// Close database connection
+$conn->close();
+?>
