@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             $stmt = $conn->prepare($sql);
 
             // Bind parameters to the statement
-            $stmt->bind_param("sdsb", $productName, $price, $description, $image);
+            $stmt->bind_param("sdss", $productName, $price, $description, $image);
 
             // Execute statement
             if ($stmt->execute()) {
@@ -61,43 +61,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
-    <link rel="stylesheet" href="../../css/edit_page_style.css">
+    <link rel="stylesheet" href="../../css/add_product.css">
 </head>
 <body>
 
     <!-----nav-bar--->
-        <?php
-        include '../split/nav_bar.php';
-        ?>
+    <div class="split">
+    <?php include '../split/nav_bar.php'; ?>
+    </div>
 
+    <div class="split">
 
     <div id="main">
-        <!-- Display Message Section -->
-        <?php if (!empty($display_message)) { ?>
-            <div class="display_message">
-                <span><?php echo $display_message; ?></span>
-                <i class='fas fa-times' onclick='this.parentElement.style.display=`none`'></i>
+        <div id="sub_main">
+            <!-- Display Message Section -->
+            <?php if (!empty($display_message)) { ?>
+                <div class="display_message">
+                    <span><?php echo $display_message; ?></span>
+                    <i class='fas fa-times' onclick='this.parentElement.style.display=`none`'></i>
+                </div>
+            <?php } ?>
+
+            <div class="container">
+                <h2>Add Products</h2>
+                <div  class="form-container">   
+                <form action="add_product.php" method="post" enctype="multipart/form-data">
+                    <input type="text" id="product_name" name="product_name" placeholder="Enter product name" required>
+                    <input type="number" id="price" name="price" placeholder="Enter product price" required>
+                    <textarea id="description" name="description" placeholder="Enter product description" required></textarea>
+                    <input type="file" id="image" name="image" accept="image/*" required>
+                    <button type="submit" name="submit">Add Product</button>
+                </form>
+                </div>
             </div>
-        <?php } ?>
-
-        <div class="form-container">
-            <h2>Add Product</h2>
-            <form action="add_product.php" method="post" enctype="multipart/form-data">
-                <label for="product_name">Product Name:</label>
-                <input type="text" id="product_name" name="product_name" required>
-
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" required>
-
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" required></textarea>
-
-                <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
-
-                <button type="submit" name="submit">Add Product</button>
-            </form>
         </div>
     </div>
+    </div>
+
+    
 </body>
 </html>
+
+
